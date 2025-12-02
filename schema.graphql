@@ -1,0 +1,70 @@
+type TwilightCCADemo_AuctionStepRecorded {
+  id: ID!
+  startBlock: BigInt!
+  endBlock: BigInt!
+  mps: BigInt!
+}
+
+type TwilightCCADemo_BidExited {
+  id: ID!
+  bidId: BigInt!
+  owner: String!
+  tokensFilled: BigInt!
+  currencyRefunded: BigInt!
+}
+
+type TwilightCCADemo_BidSubmitted {
+  id: ID!
+  event_id: BigInt!
+  owner: String!
+  price: BigInt!
+  amount: BigInt!
+}
+
+type TwilightCCADemo_CheckpointUpdated {
+  id: ID!
+  blockNumber: BigInt!
+  clearingPrice: BigInt!
+  cumulativeMps: BigInt!
+}
+
+type TwilightCCADemo_ClearingPriceUpdated {
+  id: ID!
+  blockNumber: BigInt!
+  clearingPrice: BigInt!
+}
+
+type TwilightCCADemo_CurrencySwept {
+  id: ID!
+  fundsRecipient: String!
+  currencyAmount: BigInt!
+}
+
+type TwilightCCADemo_NextActiveTickUpdated {
+  id: ID!
+  price: BigInt!
+}
+
+type TwilightCCADemo_TickInitialized {
+  id: ID!
+  price: BigInt!
+}
+
+type TwilightCCADemo_TokensClaimed {
+  id: ID!
+  bidId: BigInt!
+  owner: String!
+  tokensFilled: BigInt!
+}
+
+type TwilightCCADemo_TokensReceived {
+  id: ID!
+  totalSupply: BigInt!
+}
+
+type TwilightCCADemo_TokensSwept {
+  id: ID!
+  tokensRecipient: String!
+  tokensAmount: BigInt!
+}
+

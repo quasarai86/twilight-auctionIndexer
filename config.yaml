@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=./node_modules/envio/evm.schema.json
+name: twilight-auctionIndexer
+networks:
+- id: 11155111
+  start_block: 9753212
+  contracts:
+  - name: twilightCCADemo
+    address:
+    - 0x3C2775037F91267C22D79d126EA9B8d91ff73c70
+    handler: src/EventHandlers.ts
+    events:
+    - event: AuctionStepRecorded(uint256 startBlock, uint256 endBlock, uint24 mps)
+    - event: BidExited(uint256 indexed bidId, address indexed owner, uint256 tokensFilled, uint256 currencyRefunded)
+    - event: BidSubmitted(uint256 indexed id, address indexed owner, uint256 price, uint128 amount)
+    - event: CheckpointUpdated(uint256 blockNumber, uint256 clearingPrice, uint24 cumulativeMps)
+    - event: ClearingPriceUpdated(uint256 blockNumber, uint256 clearingPrice)
+    - event: CurrencySwept(address indexed fundsRecipient, uint256 currencyAmount)
+    - event: NextActiveTickUpdated(uint256 price)
+    - event: TickInitialized(uint256 price)
+    - event: TokensClaimed(uint256 indexed bidId, address indexed owner, uint256 tokensFilled)
+    - event: TokensReceived(uint256 totalSupply)
+    - event: TokensSwept(address indexed tokensRecipient, uint256 tokensAmount)
+unordered_multichain_mode: true
+preload_handlers: true
