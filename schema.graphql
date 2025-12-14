@@ -19,6 +19,9 @@ type TwilightCCADemo_BidSubmitted {
   owner: String!
   price: BigInt!
   amount: BigInt!
+  blockNumber: BigInt!
+  transactionHash: String!
+  blockTimestamp: BigInt!
 }
 
 type TwilightCCADemo_CheckpointUpdated {
@@ -66,5 +69,17 @@ type TwilightCCADemo_TokensSwept {
   id: ID!
   tokensRecipient: String!
   tokensAmount: BigInt!
+}
+
+type Owner {
+  id: ID!
+  firstSeenBlock: BigInt!
+}
+
+type GlobalState {
+  id: ID!
+  totalBids: Int!
+  uniqueOwners: Int!
+  totalAmount: BigInt!
 }
 

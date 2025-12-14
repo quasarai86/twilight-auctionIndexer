@@ -14,6 +14,8 @@ import {
   TwilightCCADemo_TokensClaimed,
   TwilightCCADemo_TokensReceived,
   TwilightCCADemo_TokensSwept,
+  Owner,
+  GlobalState,
 } from "generated";
 
 TwilightCCADemo.AuctionStepRecorded.handler(async ({ event, context }) => {
@@ -40,12 +42,47 @@ TwilightCCADemo.BidExited.handler(async ({ event, context }) => {
 });
 
 TwilightCCADemo.BidSubmitted.handler(async ({ event, context }) => {
+  const blockNumber = event.block.number;
+  const blockTimestamp = event.block.timestamp;
+  const transactionHash = event.transaction?.hash ?? "";
+
+  // Upsert global aggregates
+  const globalId = "global";
+  const existingGlobal = await context.GlobalState.get(globalId);
+  const currentTotalBids = existingGlobal?.totalBids ?? 0;
+  const currentUniqueOwners = existingGlobal?.uniqueOwners ?? 0;
+  const currentTotalAmount = existingGlobal?.totalAmount ?? 0n;
+
+  const ownerId = event.params.owner.toLowerCase();
+  const existingOwner = await context.Owner.get(ownerId);
+
+  let updatedUniqueOwners = currentUniqueOwners;
+  if (!existingOwner) {
+    const ownerEntity: Owner = {
+      id: ownerId,
+      firstSeenBlock: BigInt(blockNumber),
+    };
+    context.Owner.set(ownerEntity);
+    updatedUniqueOwners += 1;
+  }
+
+  const updatedGlobal: GlobalState = {
+    id: globalId,
+    totalBids: currentTotalBids + 1,
+    uniqueOwners: updatedUniqueOwners,
+    totalAmount: currentTotalAmount + event.params.amount,
+  };
+  context.GlobalState.set(updatedGlobal);
+
   const entity: TwilightCCADemo_BidSubmitted = {
     id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
     event_id: event.params.id,
-    owner: event.params.owner,
+    owner: ownerId,
     price: event.params.price,
     amount: event.params.amount,
+    blockNumber: BigInt(blockNumber),
+    transactionHash,
+    blockTimestamp: BigInt(blockTimestamp),
   };
 
   context.TwilightCCADemo_BidSubmitted.set(entity);

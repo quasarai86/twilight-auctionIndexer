@@ -12,6 +12,9 @@ networks:
     - event: AuctionStepRecorded(uint256 startBlock, uint256 endBlock, uint24 mps)
     - event: BidExited(uint256 indexed bidId, address indexed owner, uint256 tokensFilled, uint256 currencyRefunded)
     - event: BidSubmitted(uint256 indexed id, address indexed owner, uint256 price, uint128 amount)
+      field_selection:
+        transaction_fields:
+        - hash
     - event: CheckpointUpdated(uint256 blockNumber, uint256 clearingPrice, uint24 cumulativeMps)
     - event: ClearingPriceUpdated(uint256 blockNumber, uint256 clearingPrice)
     - event: CurrencySwept(address indexed fundsRecipient, uint256 currencyAmount)
