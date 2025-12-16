@@ -35,6 +35,7 @@ type TwilightCCADemo_ClearingPriceUpdated {
   id: ID!
   blockNumber: BigInt!
   clearingPrice: BigInt!
+  blockTimestamp: BigInt!
 }
 
 type TwilightCCADemo_CurrencySwept {

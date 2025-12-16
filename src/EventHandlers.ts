@@ -80,9 +80,9 @@ TwilightCCADemo.BidSubmitted.handler(async ({ event, context }) => {
     owner: ownerId,
     price: event.params.price,
     amount: event.params.amount,
-    blockNumber: BigInt(blockNumber),
+    blockNumber: BigInt(event.block.number),
     transactionHash,
-    blockTimestamp: BigInt(blockTimestamp),
+    blockTimestamp: BigInt(event.block.timestamp),
   };
 
   context.TwilightCCADemo_BidSubmitted.set(entity);
@@ -104,6 +104,7 @@ TwilightCCADemo.ClearingPriceUpdated.handler(async ({ event, context }) => {
     id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
     blockNumber: event.params.blockNumber,
     clearingPrice: event.params.clearingPrice,
+    blockTimestamp: BigInt(event.block.timestamp),
   };
 
   context.TwilightCCADemo_ClearingPriceUpdated.set(entity);
