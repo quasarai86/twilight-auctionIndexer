@@ -33,7 +33,7 @@ TwilightCCADemo.BidExited.handler(async ({ event, context }) => {
   const entity: TwilightCCADemo_BidExited = {
     id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
     bidId: event.params.bidId,
-    owner: event.params.owner,
+    owner: event.params.owner.toLowerCase(),
     tokensFilled: event.params.tokensFilled,
     currencyRefunded: event.params.currencyRefunded,
   };
@@ -66,12 +66,13 @@ TwilightCCADemo.BidSubmitted.handler(async ({ event, context }) => {
     updatedUniqueOwners += 1;
   }
 
-  const updatedGlobal: GlobalState = {
-    id: globalId,
-    totalBids: currentTotalBids + 1,
-    uniqueOwners: updatedUniqueOwners,
-    totalAmount: currentTotalAmount + event.params.amount,
-  };
+const updatedGlobal: GlobalState = {
+  ...existingGlobal,
+  id: globalId,
+  totalBids: currentTotalBids + 1,
+  uniqueOwners: updatedUniqueOwners,
+  totalAmount: currentTotalAmount + event.params.amount,
+};
   context.GlobalState.set(updatedGlobal);
 
   const entity: TwilightCCADemo_BidSubmitted = {
@@ -142,7 +143,7 @@ TwilightCCADemo.TokensClaimed.handler(async ({ event, context }) => {
   const entity: TwilightCCADemo_TokensClaimed = {
     id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
     bidId: event.params.bidId,
-    owner: event.params.owner,
+    owner: event.params.owner.toLowerCase(),
     tokensFilled: event.params.tokensFilled,
   };
 
